@@ -46,12 +46,14 @@ export default class CanvasSpriteRenderer
 
         const width = texture._frame.width;
         const height = texture._frame.height;
+        let outWidth = texture.orig.width;
+        let outHeight = texture.orig.height;
 
         let wt = sprite.transform.worldTransform;
         let dx = 0;
         let dy = 0;
 
-        if (texture.orig.width <= 0 || texture.orig.height <= 0 || !texture.baseTexture.source)
+        if (outWidth <= 0 || outWidth <= 0 || !texture.baseTexture.source)
         {
             return;
         }
@@ -75,6 +77,8 @@ export default class CanvasSpriteRenderer
             {
                 dx = (texture.trim.width / 2) + texture.trim.x - (sprite.anchor.x * texture.orig.width);
                 dy = (texture.trim.height / 2) + texture.trim.y - (sprite.anchor.y * texture.orig.height);
+                outWidth = texture.trim.width;
+                outHeight = texture.trim.height;
             }
             else
             {
@@ -92,8 +96,8 @@ export default class CanvasSpriteRenderer
                 dy = 0;
             }
 
-            dx -= texture.orig.width / 2;
-            dy -= texture.orig.height / 2;
+            dx -= outWidth / 2;
+            dy -= outHeight / 2;
 
             // Allow for pixel rounding
             if (renderer.roundPixels)
@@ -142,8 +146,8 @@ export default class CanvasSpriteRenderer
                     height * resolution,
                     dx * renderer.resolution,
                     dy * renderer.resolution,
-                    texture.orig.width * renderer.resolution,
-                    texture.orig.height * renderer.resolution
+                    outWidth * renderer.resolution,
+                    outHeight * renderer.resolution
                 );
             }
             else
@@ -156,8 +160,8 @@ export default class CanvasSpriteRenderer
                     height * resolution,
                     dx * renderer.resolution,
                     dy * renderer.resolution,
-                    texture.orig.width * renderer.resolution,
-                    texture.orig.height * renderer.resolution
+                    outWidth * renderer.resolution,
+                    outHeight * renderer.resolution
                 );
             }
         }
