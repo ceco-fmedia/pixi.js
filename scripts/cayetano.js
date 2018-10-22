@@ -1,7 +1,7 @@
 var fs = require("fs");
 var path = require("path");
 
-var rgxCayetano = /([^a-z#])(define)([^a-zA-Z])/g;
+var rgxCayetano = /([^a-z#])(define)([^a-zA-Z,])/gm;
 
 var pixijs = fs.readFileSync("dist/pixi.min.js", "utf8");
 pixijs = pixijs.replace(rgxCayetano, '$1com.cayetano.$2$3');
