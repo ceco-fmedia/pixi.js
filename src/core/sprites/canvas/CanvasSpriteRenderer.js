@@ -70,17 +70,10 @@ export default class CanvasSpriteRenderer
             {
                 renderer.context[renderer.smoothProperty] = smoothingEnabled;
             }
+            const trim = texture.trim || texture.orig;
 
-            if (texture.trim)
-            {
-                dx = (texture.trim.width / 2) + texture.trim.x - (sprite.anchor.x * texture.orig.width);
-                dy = (texture.trim.height / 2) + texture.trim.y - (sprite.anchor.y * texture.orig.height);
-            }
-            else
-            {
-                dx = (0.5 - sprite.anchor.x) * texture.orig.width;
-                dy = (0.5 - sprite.anchor.y) * texture.orig.height;
-            }
+            dx = (trim.width / 2) + trim.x - (sprite.anchor.x * texture.orig.width);
+            dy = (trim.height / 2) + trim.y - (sprite.anchor.y * texture.orig.height);
 
             if (texture.rotate)
             {
@@ -92,8 +85,8 @@ export default class CanvasSpriteRenderer
                 dy = 0;
             }
 
-            dx -= texture.trim.width / 2;
-            dy -= texture.trim.height / 2;
+            dx -= trim.width / 2;
+            dy -= trim.height / 2;
 
             // Allow for pixel rounding
             if (renderer.roundPixels)
@@ -142,8 +135,8 @@ export default class CanvasSpriteRenderer
                     height * resolution,
                     dx * renderer.resolution,
                     dy * renderer.resolution,
-                    texture.trim.width * renderer.resolution,
-                    texture.trim.height * renderer.resolution
+                    trim.width * renderer.resolution,
+                    trim.height * renderer.resolution
                 );
             }
             else
@@ -156,8 +149,8 @@ export default class CanvasSpriteRenderer
                     height * resolution,
                     dx * renderer.resolution,
                     dy * renderer.resolution,
-                    texture.trim.width * renderer.resolution,
-                    texture.trim.height * renderer.resolution
+                    trim.width * renderer.resolution,
+                    trim.height * renderer.resolution
                 );
             }
         }
