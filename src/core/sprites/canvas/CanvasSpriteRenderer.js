@@ -44,12 +44,7 @@ export default class CanvasSpriteRenderer
         const texture = sprite._texture;
         const renderer = this.renderer;
 
-        const width = texture._frame.width;
-        const height = texture._frame.height;
-
         let wt = sprite.transform.worldTransform;
-        let dx = 0;
-        let dy = 0;
 
         if (texture.orig.width <= 0 || texture.orig.height <= 0 || !texture.baseTexture.source)
         {
@@ -61,6 +56,9 @@ export default class CanvasSpriteRenderer
         //  Ignore null sources
         if (texture.valid)
         {
+            const width = (texture.trim || texture.orig).width;
+            const height = (texture.trim || texture.orig).height;
+
             renderer.context.globalAlpha = sprite.worldAlpha;
 
             // If smoothingEnabled is supported and we need to change the smoothing property for sprite texture
@@ -70,10 +68,19 @@ export default class CanvasSpriteRenderer
             {
                 renderer.context[renderer.smoothProperty] = smoothingEnabled;
             }
-            const trim = texture.trim || texture.orig;
+            let dx = 0;
+            let dy = 0;
 
-            dx = (trim.width / 2) + trim.x - (sprite.anchor.x * texture.orig.width);
-            dy = (trim.height / 2) + trim.y - (sprite.anchor.y * texture.orig.height);
+            if (texture.trim)
+            {
+                dx = (texture.trim.width / 2) + texture.trim.x - (sprite.anchor.x * texture.orig.width);
+                dy = (texture.trim.height / 2) + texture.trim.y - (sprite.anchor.y * texture.orig.height);
+            }
+            else
+            {
+                dx = (0.5 - sprite.anchor.x) * texture.orig.width;
+                dy = (0.5 - sprite.anchor.y) * texture.orig.height;
+            }
 
             if (texture.rotate)
             {
@@ -85,8 +92,8 @@ export default class CanvasSpriteRenderer
                 dy = 0;
             }
 
-            dx -= trim.width / 2;
-            dy -= trim.height / 2;
+            dx -= width / 2;
+            dy -= height / 2;
 
             // Allow for pixel rounding
             if (renderer.roundPixels)
@@ -131,12 +138,12 @@ export default class CanvasSpriteRenderer
                     sprite.tintedTexture,
                     0,
                     0,
-                    width * resolution,
-                    height * resolution,
+                    texture._frame.width * resolution,
+                    texture._frame.height * resolution,
                     dx * renderer.resolution,
                     dy * renderer.resolution,
-                    trim.width * renderer.resolution,
-                    trim.height * renderer.resolution
+                    width * renderer.resolution,
+                    height * renderer.resolution
                 );
             }
             else
@@ -145,12 +152,12 @@ export default class CanvasSpriteRenderer
                     texture.baseTexture.source,
                     texture._frame.x * resolution,
                     texture._frame.y * resolution,
-                    width * resolution,
-                    height * resolution,
+                    texture._frame.width * resolution,
+                    texture._frame.height * resolution,
                     dx * renderer.resolution,
                     dy * renderer.resolution,
-                    trim.width * renderer.resolution,
-                    trim.height * renderer.resolution
+                    width * renderer.resolution,
+                    height * renderer.resolution
                 );
             }
         }
