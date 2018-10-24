@@ -72,7 +72,7 @@ export default class Text extends Sprite
          * @member {number}
          * @default 1
          */
-        this.resolution = settings.RESOLUTION;
+        this.resolution = 1;
 
         /**
          * Private tracker for the current text.
@@ -132,8 +132,6 @@ export default class Text extends Sprite
         {
             return;
         }
-
-        this.resolution = 1;
 
         this._font = this._style.toFontString();
 
@@ -365,9 +363,9 @@ export default class Text extends Sprite
      */
     renderWebGL(renderer)
     {
-        if (this.resolution !== renderer.resolution)
+        if (this.resolution !== 1)
         {
-            this.resolution = renderer.resolution;
+            this.resolution = 1;
             this.dirty = true;
         }
 
@@ -384,9 +382,9 @@ export default class Text extends Sprite
      */
     _renderCanvas(renderer)
     {
-        if (this.resolution !== renderer.resolution)
+        if (this.resolution !== 1)
         {
-            this.resolution = renderer.resolution;
+            this.resolution = 1;
             this.dirty = true;
         }
 
